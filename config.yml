@@ -1,0 +1,8 @@
+---
+- hosts: maquinas
+  become: true
+  tasks:
+
+  - name: instalar a engine NodeJS
+    apt:
+      name: nodejs
