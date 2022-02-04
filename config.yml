@@ -1,19 +1,34 @@
 ---
-- hosts: maquinas
+- hosts: all
   become: true
   tasks:
 
-  - name: apt update
+  - name: atualizar o os pacotes das vm
     apt:
       update_cache: yes
-      cache_valid_time: 30000
+      cache_valid_time: 3600
 
-  - name: instalar a engine NodeJS
+- hosts: webserver
+  tags: webserver
+  become: true
+  tasks:
+  - name: instalar o apache2
+    tags:
+      - local
     apt:
-      name: nodejs
-      state: latest
-  
-  - name: npm
+      name:
+        - apache2
+  - name: Copiando arquivos html para o webserver
+    copy:
+      src: /home/patrick/Workspace/Matrixeffect/
+      dest: /var/www/html
+      mode: 0644
+
+- hosts: database
+  become: true
+  tasks:
+
+  - name: instalar o mongo
     apt:
-      name: npm
-      state: latest
+      name:
+        - mongodb
