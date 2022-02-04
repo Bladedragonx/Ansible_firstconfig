@@ -3,6 +3,17 @@
   become: true
   tasks:
 
+  - name: apt update
+    apt:
+      update_cache: yes
+      cache_valid_time: 30000
+
   - name: instalar a engine NodeJS
     apt:
       name: nodejs
+      state: latest
+  
+  - name: npm
+    apt:
+      name: npm
+      state: latest
