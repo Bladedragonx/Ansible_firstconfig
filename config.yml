@@ -29,6 +29,22 @@
   tasks:
 
   - name: instalar o mongo
+    tags:
+      - db
     apt:
       name:
         - mongodb
+  - name: Habilitar o Mongo para se conectar a internet
+    tags: db
+    lineinfile:
+      path: /etc/mongodb.conf
+      regexp: 'bind_ip = 127.0.0.1'
+      line: bind_ip = 172.22.254.170
+    register: mongo_config
+
+  - name: reiniar o serviço do Mongo
+    tags: db
+    service:
+      name: mongodb
+      state: restarted
+    when: mongo_config.changed
